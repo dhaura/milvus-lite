@@ -111,10 +111,13 @@ class CMakeBuild(_bdist_wheel):
                 # macos
                 subprocess.check_call(['conan', 'install', extdir, '--build=missing', '-s', 'build_type=Release'], cwd=build_temp, env=env)
         # build
-        extra_cmake_args = shlex.split(env.get('CMAKE_ARGS', ''))
-        extra_build_args = shlex.split(env.get('BUILD_ARGS', ''))
-        subprocess.check_call(['cmake', extdir, '-DENABLE_UNIT_TESTS=OFF', system_deps, *extra_cmake_args], cwd=build_temp, env=env)
-        subprocess.check_call(['cmake', '--build', '.', '--', '-j4', *extra_build_args],
+        # extra_cmake_args = shlex.split(env.get('CMAKE_ARGS', ''))
+        # extra_build_args = shlex.split(env.get('BUILD_ARGS', ''))
+        # subprocess.check_call(['cmake', extdir, '-DENABLE_UNIT_TESTS=OFF', system_deps, *extra_cmake_args], cwd=build_temp, env=env)
+        # subprocess.check_call(['cmake', '--build', '.', '--', '-j4', *extra_build_args],
+        subprocess.check_call(['cmake', extdir, '-DENABLE_UNIT_TESTS=OFF', '-DBLAS_LIBRARIES=/lib/x86_64-linux-gnu/libblas.so', '-DLAPACK_LIBRARIES=/lib/x86_64-linux-gnu/liblapack.so'], cwd=build_temp, env=env)
+        subprocess.check_call(['cmake', '--build', '.', '--', '-j4'],
+
                               cwd=build_temp,
                               env=env,
                               )
